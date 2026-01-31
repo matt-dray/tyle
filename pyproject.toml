@@ -1,0 +1,17 @@
+[project]
+name = "tyle"
+version = "0.1.0"
+description = "A CLI with a tiny interactive toy roguelike-like experience."
+readme = "README.md"
+authors = [
+    { name = "Matt Dray", email = "mwdray+tyle@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+tyle = "tyle.cli:main"
+
+[build-system]
+requires = ["uv_build >= 0.9.26, <0.10.0"]
+build-backend = "uv_build"
