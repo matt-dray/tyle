@@ -7,7 +7,7 @@
 A Python CLI with a small interactive toy roguelike-like experience.
 
 > [!NOTE] 
-> This is a a no-dependency concept to help me learn Python.
+> This is a no-dependency concept to help me learn Python.
 
 ## Install
 
