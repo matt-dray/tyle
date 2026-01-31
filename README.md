@@ -2,10 +2,14 @@
 
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 
+## About
+
 A Python CLI with a small interactive toy roguelike-like experience.
 
-Just a concept for now.
-May be developed in future.
+> [!NOTE] 
+> This is a a no-dependency concept to help me learn Python.
+
+## Install
 
 Install with [uv](https://docs.astral.sh/uv/getting-started/installation/):
 
@@ -13,26 +17,22 @@ Install with [uv](https://docs.astral.sh/uv/getting-started/installation/):
 uv tool install git+https://github.com/matt-dray/tyle
 ```
 
-Or, to develop the tool, clone and install in editable mode:
+## Play
 
-```bash
-uv pip install -e .
-```
-
-Then, from a terminal:
+From a terminal:
 
 ```bash
 tyle
 ```
 
-To get a randomised tile grid like this:
+The terminal will clear and a tile grid will appear.
 
-```txt
+```
 .......#..
 ..........
 .##..#....
 ....#....#
-.....#....
+......#...
 .....@....
 ..#.......
 ........#.
@@ -41,9 +41,28 @@ To get a randomised tile grid like this:
 Move (WASD+Enter): 
 ```
 
-You control `@`. Floor tiles (`.`) are traversable but walls (`#`) aren't.
+You control `@`.
+Floor tiles (`.`) are traversable but walls (`#`) aren't.
 
-Type:
+Type at the prompt:
 
-* e.g. <kbd>W</kbd> and <kbd>Enter</kbd> to move up.
-* <kbd>Q</kbd> and <kbd>Enter</kbd> to quit.
+* e.g. <kbd>W</kbd> and <kbd>Enter</kbd> to move up
+* <kbd>Q</kbd> and <kbd>Enter</kbd> to quit
+
+## Dev
+
+To develop the tool, clone and install in editable mode:
+
+```bash
+git clone https://github.com/matt-dray/tyle.git
+cd tyle
+uv venv  # then activate the venv
+uv sync
+uv pip install -e .
+tyle
+```
+
+## Related
+
+I wrote [the r.oguelike package](https://github.com/matt-dray/r.oguelike) for a toy roguelike in the R console .
+You can [read some blog posts](https://www.rostrum.blog/index.html#category=r.oguelike) about it.
