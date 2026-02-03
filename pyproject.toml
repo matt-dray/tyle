@@ -1,6 +1,6 @@
 [project]
 name = "tyle"
-version = "0.1.0"
+version = "0.1.0.9000"
 description = "A CLI with a tiny interactive toy roguelike-like experience."
 readme = "README.md"
 authors = [
