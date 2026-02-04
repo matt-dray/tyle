@@ -146,7 +146,7 @@ class TileGrid:
         YELLOW = "\033[93m"
         BLACK = "\033[30m"
         RED = "\033[31m"
-        RESET = "\033[0m" # reset codes after use (colour-symbol-reset)
+        RESET = "\033[0m"  # reset codes after use (colour-symbol-reset)
 
         symbol_colours = {
             "@": YELLOW,
