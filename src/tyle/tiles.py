@@ -141,20 +141,29 @@ class TileGrid:
         Returns:
             None: Prints the tile grid.
         """
+
+        # ANSI colour codes for symbols
+        YELLOW = "\033[93m"
+        BLACK = "\033[30m"
+        RED = "\033[31m"
+        RESET = "\033[0m" # reset codes after use (colour-symbol-reset)
+
+        symbol_colours = {
+            "@": YELLOW,
+            ".": BLACK,
+            "#": RED,
+        }
+
         for row in range(self.n_rows):
             row_symbols = []
             for col in range(self.n_cols):
-                # Check for player
                 if self.player.row == row and self.player.col == col:
-                    is_player = True
+                    symbol = self.player.symbol
                 else:
-                    is_player = False
+                    symbol = self.tiles[row][col].symbol
 
-                # Draw player if present
-                if is_player:
-                    row_symbols.append(self.player.symbol)
-                else:
-                    row_symbols.append(self.tiles[row][col].symbol)
+                colour = symbol_colours[symbol]
+                row_symbols.append(f"{colour}{symbol}{RESET} ")  # breathing space
 
             print("".join(row_symbols))
 
