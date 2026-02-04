@@ -81,8 +81,8 @@ def main() -> None:
         "-w",
         "--walls",
         type=positive_int,
-        default=10,
-        help="number of non-traversable walls (default 10, clipped to max 25%% of tiles)",
+        default=25,
+        help="number of non-traversable walls (default 25, clipped to max 25%% of tiles)",
     )
     args = parser.parse_args()
 
@@ -101,6 +101,7 @@ def main() -> None:
         tile_grid.draw()
         in_play = tile_grid.process_input()
         if not in_play:
+            print("Thanks for playing!")
             break
 
 
