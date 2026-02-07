@@ -19,8 +19,8 @@ def bounded_int(value: str) -> int:
         int: The value entered, otherwise an error.
     """
     int_value = int(value)
-    if int_value <= 0 or int_value > 50:
-        raise argparse.ArgumentTypeError("Value must be >0 and <=50")
+    if int_value <= 2 or int_value > 50:
+        raise argparse.ArgumentTypeError("Value must be >2 and <=50")
     return int_value
 
 
