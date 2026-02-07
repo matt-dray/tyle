@@ -27,33 +27,6 @@ class Tile:
         self.traversable = traversable
 
 
-def create_grid(
-    n_rows: int, n_cols: int, n_walls: int, tileset: Dict[str, str]
-) -> List[List[Tile]]:
-    """
-    Create a grid of tiles.
-
-    Parameters:
-        n_rows (int): The number of rows for the tile grid.
-        n_cols (int): The number of columns for the tile grid.
-        n_walls (int): The number of impassable wall tiles to spawn.
-        tileset (Dict[str, str]): Single-character symbols representing named tiles types.
-
-    Returns:
-        List[List[Tile]: A list with n_rows lists, each containing n_rows tiles.
-    """
-    grid = [
-        [Tile(tileset["floor"], True) for _ in range(n_cols)] for _ in range(n_rows)
-    ]
-
-    wall_positions = [(row, col) for row in range(n_rows) for col in range(n_cols)]
-
-    for row, col in random.sample(wall_positions, min(n_walls, len(wall_positions))):
-        grid[row][col] = Tile(tileset["wall"], False)
-
-    return grid
-
-
 def is_traversable(symbol: str, blocking_symbols: List[str] = ["#"]) -> bool:
     """
     Decide if a tile can be travelled on by an entity.
@@ -98,6 +71,38 @@ class Entity:
         self.hp = hp
 
 
+def create_grid(
+    n_rows: int, n_cols: int, n_walls: int, tileset: Dict[str, str], player: Entity
+) -> List[List[Tile]]:
+    """
+    Create a grid of tiles.
+
+    Parameters:
+        n_rows (int): The number of rows for the tile grid.
+        n_cols (int): The number of columns for the tile grid.
+        n_walls (int): The number of impassable wall tiles to spawn.
+        tileset (Dict[str, str]): Single-character symbols representing named tiles types.
+        player (Entity): Instance of an Entity class representing the player.
+
+    Returns:
+        List[List[Tile]: A list with n_rows lists, each containing n_rows tiles.
+    """
+    grid = [
+        [Tile(tileset["floor"], True) for _ in range(n_cols)] for _ in range(n_rows)
+    ]
+
+    possible_wall_positions = [
+        (row, col) for row in range(n_rows) for col in range(n_cols)
+    ]
+    player_position = (player.row, player.col)
+    possible_wall_positions.remove(player_position)  # don't spawn on player tile
+
+    for row, col in random.sample(possible_wall_positions, n_walls):
+        grid[row][col] = Tile(tileset["wall"], False)
+
+    return grid
+
+
 class TileGrid:
     """
     A class representing a grid of tiles.
@@ -132,7 +137,7 @@ class TileGrid:
         self.n_cols = n_cols
         self.n_walls = n_walls
         self.player = player
-        self.tiles = create_grid(n_rows, n_cols, n_walls, tileset)
+        self.tiles = create_grid(n_rows, n_cols, n_walls, tileset, player)
 
     def draw(self) -> None:
         """
