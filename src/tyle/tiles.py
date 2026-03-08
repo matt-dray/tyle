@@ -123,7 +123,7 @@ class TileGrid:
         n_walls: int,
         tileset: Dict[str, str],
         player: Entity,
-        fog: int
+        fog: int,
     ) -> None:
         """
         Initialise a TileGrid object.
