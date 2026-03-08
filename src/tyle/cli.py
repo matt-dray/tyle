@@ -84,6 +84,13 @@ def main() -> None:
         default=25,
         help="number of non-traversable walls (default 25, clipped to max 25%% of tiles)",
     )
+    parser.add_argument(
+        "-f",
+        "--fog",
+        type=positive_int,
+        default=2,
+        help="number of tiles beyonf which to shwo fog of war (default 22)",
+    )
     args = parser.parse_args()
 
     tileset = {"floor": ".", "wall": "#", "player": "@", "fog": "?"}
@@ -93,7 +100,7 @@ def main() -> None:
     n_walls = min(args.walls, max(0, n_rows * n_cols) // 4)  # ensure floorspace
 
     player = Entity(tileset["player"], n_rows // 2, n_cols // 2)  # middle-ish
-    fog = 2  # tile distance around player to show (everything else shrouded)
+    fog = args.fog  # tile distance around player to show (everything else shrouded)
 
     tile_grid = TileGrid(n_rows, n_cols, n_walls, tileset, player, fog)
 
