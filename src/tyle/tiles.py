@@ -113,6 +113,7 @@ class TileGrid:
         n_walls (int): The number of impassable wall tiles to spawn.
         tileset (Dict[str, str]): Single-character symbols representing named tiles types.
         player (Entity): Instance of an Entity class representing the player.
+        fog (int): Tile-distance to draw fog of war. Defaults to 2.
     """
 
     def __init__(
@@ -122,6 +123,7 @@ class TileGrid:
         n_walls: int,
         tileset: Dict[str, str],
         player: Entity,
+        fog: int,
     ) -> None:
         """
         Initialise a TileGrid object.
@@ -132,12 +134,14 @@ class TileGrid:
             n_walls (int): The number of impassable wall tiles to spawn.
             player (Entity): Instance of an Entity class representing the player.
             tiles (List[List[Tile]]): A list with n_rows lists, each containing n_rows tiles.
+            fog (int): Tile-distance to draw fog of war. Defaults to 2.
         """
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_walls = n_walls
         self.player = player
         self.tiles = create_grid(n_rows, n_cols, n_walls, tileset, player)
+        self.fog = fog
 
     def draw(self) -> None:
         """
@@ -151,21 +155,22 @@ class TileGrid:
         YELLOW = "\033[93m"
         BLACK = "\033[30m"
         RED = "\033[31m"
+        GREY = "\033[90m"
         RESET = "\033[0m"  # reset codes after use (colour-symbol-reset)
 
-        symbol_colours = {
-            "@": YELLOW,
-            ".": BLACK,
-            "#": RED,
-        }
+        symbol_colours = {"@": YELLOW, ".": BLACK, "#": RED, "?": GREY}
 
         for row in range(self.n_rows):
             row_symbols = []
             for col in range(self.n_cols):
                 if self.player.row == row and self.player.col == col:
                     symbol = self.player.symbol
-                else:
+                elif max(
+                    abs(self.player.row - row), abs(self.player.col - col)
+                ) in range(1, self.fog + 1):
                     symbol = self.tiles[row][col].symbol
+                else:
+                    symbol = "?"
 
                 colour = symbol_colours[symbol]
                 row_symbols.append(f"{colour}{symbol}{RESET} ")  # breathing space

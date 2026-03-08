@@ -86,15 +86,16 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    tileset = {"floor": ".", "wall": "#", "player": "@"}
+    tileset = {"floor": ".", "wall": "#", "player": "@", "fog": "?"}
 
     n_rows = args.rows
     n_cols = args.cols
     n_walls = min(args.walls, max(0, n_rows * n_cols) // 4)  # ensure floorspace
 
     player = Entity(tileset["player"], n_rows // 2, n_cols // 2)  # middle-ish
+    fog = 2  # tile distance around player to show (everything else shrouded)
 
-    tile_grid = TileGrid(n_rows, n_cols, n_walls, tileset, player)
+    tile_grid = TileGrid(n_rows, n_cols, n_walls, tileset, player, fog)
 
     while True:
         os.system("cls" if os.name == "nt" else "clear")  # clear screen
