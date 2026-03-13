@@ -142,6 +142,7 @@ class TileGrid:
         self.player = player
         self.tiles = create_grid(n_rows, n_cols, n_walls, tileset, player)
         self.fog = fog
+        self.direction = "none"
 
     def draw(self) -> None:
         """
@@ -219,16 +220,24 @@ class TileGrid:
             if move == "q":
                 break
 
-            directions = {
+            tile_changes = {
                 "w": (-1, 0),  # (row change, column change)
                 "s": (1, 0),
                 "a": (0, -1),
                 "d": (0, 1),
             }
 
-            if move in directions:
-                row_change, col_change = directions[move]
+            directions = {
+                "w": "up",
+                "s": "down",
+                "a": "left",
+                "d": "right",
+            }
+
+            if move in tile_changes:
+                row_change, col_change = tile_changes[move]
                 self.move_player(self.player, row_change, col_change)
+                self.direction = directions[move]
                 return True
 
             print("Input not recognised. Try again.")

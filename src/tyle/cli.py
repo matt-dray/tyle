@@ -53,7 +53,7 @@ def main() -> None:
         description="A small interactive toy roguelike-like experience",
         epilog=(
             "usage:\n"
-            "  * example with optional arguments: tyle -r 5 -c 30 -w 15\n"
+            "  * example with optional arguments: tyle -r 5 -c 30 -w 15 -f 3\n"
             "  * move with W, A, S or D then Enter\n"
             "  * quit with Q then Enter\n"
             f"\nSource: https://github.com/matt-dray/tyle (v{version('tyle')})"
@@ -89,7 +89,7 @@ def main() -> None:
         "--fog",
         type=positive_int,
         default=2,
-        help="number of tiles beyonf which to shwo fog of war (default 22)",
+        help="number of tiles beyond which to show fog of war (default 2)",
     )
     args = parser.parse_args()
 
@@ -107,6 +107,7 @@ def main() -> None:
     while True:
         os.system("cls" if os.name == "nt" else "clear")  # clear screen
         tile_grid.draw()
+        print("Direction:", tile_grid.direction)
         in_play = tile_grid.process_input()
         if not in_play:
             print("Thanks for playing!")
