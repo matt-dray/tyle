@@ -212,28 +212,32 @@ class TileGrid:
     def process_input(self) -> bool | None:
         """
         Accept user input and process it.
-
-        Returns:
-            bool: True if the inputs is accepted and the player has been moved, False if the user quits.
         """
 
         moves = {
-            "w": {"direction": "up", "tile_change": (-1, 0)},
-            "s": {"direction": "down", "tile_change": (1, 0)},
-            "a": {"direction": "left", "tile_change": (0, -1)},
-            "d": {"direction": "right", "tile_change": (0, 1)},
+            "w": "up",
+            "s": "down",
+            "a": "left",
+            "d": "right",
+        }
+
+        direction_changes = {
+            "up": (-1, 0),
+            "down": (1, 0),
+            "left": (0, -1),
+            "right": (0, 1),
         }
 
         while True:
-            move = input("Move [wasd], [b]reak, [q]uit: ").lower()
+            move = input("Move [wasd], [b]reak, [p]lace, [q]uit: ").lower()
 
             if move == "q":
                 break
 
-            if move == "b":
-                row_change, column_change = moves[self.direction_key]["tile_change"]
+            if move in ["b", "p"]:
+                row_change, col_change = direction_changes[self.direction]
                 target_row = self.player.row + row_change
-                target_col = self.player.col + column_change
+                target_col = self.player.col + col_change
 
                 if not (
                     0 <= target_row < self.n_rows and 0 <= target_col < self.n_cols
@@ -242,19 +246,25 @@ class TileGrid:
 
                 target_tile = self.tiles[target_row][target_col]
 
-                if target_tile.symbol == self.tileset["wall"]:
-                    self.tiles[target_row][target_col] = Tile(
-                        self.tileset["floor"], True
-                    )
+                if move == "b":
+                    if target_tile.symbol == self.tileset["wall"]:
+                        self.tiles[target_row][target_col] = Tile(
+                            self.tileset["floor"], True
+                        )
+
+                if move == "p":
+                    if target_tile.symbol == self.tileset["floor"]:
+                        self.tiles[target_row][target_col] = Tile(
+                            self.tileset["wall"], False
+                        )
 
                 return True
 
             if move in moves:
-                row_change, column_change = moves[move]["tile_change"]
-                self.move_player(self.player, row_change, column_change)
+                self.direction = moves[move]
 
-                self.direction = moves[move]["direction"]
-                self.direction_key = move
+                row_change, col_change = direction_changes[self.direction]
+                self.move_player(self.player, row_change, col_change)
 
                 return True
 

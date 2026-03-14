@@ -107,7 +107,7 @@ def main() -> None:
     while True:
         os.system("cls" if os.name == "nt" else "clear")  # clear screen
         tile_grid.draw()
-        print("Direction:", tile_grid.direction)
+        print("Facing:", tile_grid.direction)
         in_play = tile_grid.process_input()
         if not in_play:
             print("Thanks for playing!")
