@@ -132,6 +132,7 @@ class TileGrid:
             n_rows (int): The number of rows for the tile grid.
             n_cols (int): The number of columns for the tile grid.
             n_walls (int): The number of impassable wall tiles to spawn.
+            tileset (Dict[str, str]): Single-character symbols representing named tiles types.
             player (Entity): Instance of an Entity class representing the player.
             tiles (List[List[Tile]]): A list with n_rows lists, each containing n_rows tiles.
             fog (int): Tile-distance to draw fog of war. Defaults to 2.
@@ -140,8 +141,10 @@ class TileGrid:
         self.n_cols = n_cols
         self.n_walls = n_walls
         self.player = player
+        self.tileset = tileset
         self.tiles = create_grid(n_rows, n_cols, n_walls, tileset, player)
         self.fog = fog
+        self.direction = "right"
 
     def draw(self) -> None:
         """
@@ -184,7 +187,7 @@ class TileGrid:
         Parameters:
             player (Entity): Instance of an Entity class representing the player.
             row_change (int): Count of tiles to move the player right (positive value) or left (negative value).
-            col_change (int):Count of tiles to move the player down (positive value) or up (negative value).
+            col_change (int): Count of tiles to move the player down (positive value) or up (negative value).
 
         Returns:
             bool: True if the player can be moved, False if not.
@@ -209,26 +212,60 @@ class TileGrid:
     def process_input(self) -> bool | None:
         """
         Accept user input and process it.
-
-        Returns:
-            bool: True if the inputs is accepted and the player has been moved, False if the user quits.
         """
+
+        moves = {
+            "w": "up",
+            "s": "down",
+            "a": "left",
+            "d": "right",
+        }
+
+        direction_changes = {
+            "up": (-1, 0),
+            "down": (1, 0),
+            "left": (0, -1),
+            "right": (0, 1),
+        }
+
         while True:
-            move = input("Move (WASD+Enter): ").lower()
+            move = input("Move [wasd], [b]reak, [p]lace, [q]uit: ").lower()
 
             if move == "q":
                 break
 
-            directions = {
-                "w": (-1, 0),  # (row change, column change)
-                "s": (1, 0),
-                "a": (0, -1),
-                "d": (0, 1),
-            }
+            if move in ["b", "p"]:
+                row_change, col_change = direction_changes[self.direction]
+                target_row = self.player.row + row_change
+                target_col = self.player.col + col_change
 
-            if move in directions:
-                row_change, col_change = directions[move]
+                if not (
+                    0 <= target_row < self.n_rows and 0 <= target_col < self.n_cols
+                ):
+                    return True
+
+                target_tile = self.tiles[target_row][target_col]
+
+                if move == "b":
+                    if target_tile.symbol == self.tileset["wall"]:
+                        self.tiles[target_row][target_col] = Tile(
+                            self.tileset["floor"], True
+                        )
+
+                if move == "p":
+                    if target_tile.symbol == self.tileset["floor"]:
+                        self.tiles[target_row][target_col] = Tile(
+                            self.tileset["wall"], False
+                        )
+
+                return True
+
+            if move in moves:
+                self.direction = moves[move]
+
+                row_change, col_change = direction_changes[self.direction]
                 self.move_player(self.player, row_change, col_change)
+
                 return True
 
             print("Input not recognised. Try again.")
