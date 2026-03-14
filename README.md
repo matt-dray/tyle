@@ -42,17 +42,21 @@ It'll be in colour if your terminal supports [ANSI colour codes](https://en.wiki
 ? ? ? ? ? ? ? ? . . . # . ? ? ? ? ? ? ? 
 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
-Move (WASD+Enter): 
+Facing: right
+Move [wasd], [b]reak, [p]lace, [q]uit: 
 ```
 
 You control the player character: `@` (starting centrally-ish).
 Floor tiles (`.`) are traversable but the randomly-placed walls (`#`) aren't.
+You can break and place wall tiles.
 You can't see beyond two tiles in any direction because of the [fog of war](https://en.wikipedia.org/wiki/Fog_of_war#In_video_games).
 
-Type at the prompt:
+Type at the prompt (followed by <kbd>Enter</kbd>):
 
-* <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd> or <kbd>D</kbd> then <kbd>Enter</kbd> to move up, left, down or right
-* <kbd>Q</kbd> then <kbd>Enter</kbd> to quit
+* <kbd>w</kbd>, <kbd>a</kbd>, <kbd>s</kbd> or <kbd>d</kbd>  to move up, left, down or right
+* <kbd>b</kbd> to break a wall
+* <kbd>p</kbd> to place a wall
+* <kbd>q</kbd> to quit
 
 You can use optional arguments to set tile-grid parameters when you start a new game:
 
